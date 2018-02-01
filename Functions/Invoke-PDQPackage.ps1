@@ -38,7 +38,7 @@ function Invoke-PDQPackage
 #>
 	
 	[CmdletBinding()]
-	[OutputType([string])]
+	[OutputType('System.string')]
 	param
 	(
 		[Parameter(Mandatory = $true)]
