@@ -1,3 +1,2 @@
 # PowerShell-Toolery-and-Foolery
-Various PowerShell stuff.
-:)
+Various PowerShell stuff :)
