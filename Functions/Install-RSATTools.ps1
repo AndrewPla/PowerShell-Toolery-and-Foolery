@@ -1,7 +1,8 @@
-﻿# Adapted from : https://blogs.technet.microsoft.com/drew/2016/12/23/installing-remote-server-admin-tools-rsat-via-powershell/
+﻿# This script installs RSAT on Windows 10 devices and installs Server Admin Tools on Windows Server
+
+# Adapted from : https://blogs.technet.microsoft.com/drew/2016/12/23/installing-remote-server-admin-tools-rsat-via-powershell/
 # By Drew Robinson
 $web = Invoke-WebRequest 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=45520'
-
 $MachineOS = (Get-CimInstance Win32_OperatingSystem).Name
 
 #Check for Windows Server 2012 R2
@@ -14,12 +15,14 @@ if ($MachineOS -like '*Microsoft Windows Server*')
 if ($ENV:PROCESSOR_ARCHITECTURE -eq 'AMD64')
 {
 	Write-Verbose 'x64 Detected'
-	$Link = (($web.AllElements | Where-Object class -eq 'multifile-failover-url').innerhtml[0].split(' ') | select-string href).tostring().replace('href=', '').trim('"')
+	$Link = (($web.AllElements | Where-Object class -eq 'multifile-failover-url').innerhtml[0].split(' ') |
+		select-string href).tostring().replace('href=', '').trim('"')
 }
 else
 {
-	Write-Verbose 'x86 Detected' 
-	$Link = (($web.AllElements | Where-Object class -eq 'multifile-failover-url').innerhtml[1].split(' ') | select-string href).tostring().replace('href=', '').trim('"')
+	Write-Verbose 'x86 Detected'
+	$Link = (($web.AllElements | Where-Object class -eq 'multifile-failover-url').innerhtml[1].split(' ') |
+		select-string href).tostring().replace('href=', '').trim('"')
 }
 
 $DLPath = ($ENV:USERPROFILE) + '\Downloads\' + ($link.split('/')[8])
