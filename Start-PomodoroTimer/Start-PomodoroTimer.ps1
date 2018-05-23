@@ -12,9 +12,7 @@
 		Length of timer
 	
 	.PARAMETER Sound
-		
 		Credit to Jeff Wouters for the Imperial March: http://jeffwouters.nl/index.php/2012/03/get-your-geek-on-with-powershell-and-some-music/
-		
 	
 	.EXAMPLE
 		PS C:\> Start-PomodoroTimer
@@ -29,7 +27,7 @@
 		[int]
 		$Minutes = 25,
 		
-		# There are a lot more different sounds available, but that takes up too much space.
+		# There are a lot more different sounds available, but that takes up too much space
 		[ValidateSet('Alarm',
 					 'SMS',
 					 'Imperial March'
@@ -49,8 +47,6 @@
 		'Clean up your workspace',
 		'Relax, you earned it'
 	)
-	
-	
 	
 	if ($Sound -match 'Imperial March')
 	{
@@ -77,15 +73,13 @@
 			[console]::beep(349, 350)
 			[console]::beep(523, 150)
 			[console]::beep(440, 1000)
-			
-
-		} 
+		}
 	}
 	else
 	{
 		Start-Job -Name 'Pomodoro Timer' -ArgumentList $Messages, $Minutes -ScriptBlock {
 			Start-Sleep -Seconds (60 * $using:Minutes)
 			New-BurntToastNotification -Text "Pomodoro Timer complete. Suggestion: $($Using:Messages | Get-Random)." -SnoozeAndDismiss -Sound $Sound
-		} 
+		}
 	}
 }
