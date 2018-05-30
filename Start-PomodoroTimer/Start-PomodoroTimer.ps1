@@ -79,7 +79,7 @@
 	{
 		Start-Job -Name 'Pomodoro Timer' -ArgumentList $Messages, $Minutes -ScriptBlock {
 			Start-Sleep -Seconds (60 * $using:Minutes)
-			New-BurntToastNotification -Text "Pomodoro Timer complete. Suggestion: $($Using:Messages | Get-Random)." -SnoozeAndDismiss -Sound $Sound
+			New-BurntToastNotification -Text "Pomodoro Timer complete. Suggestion: $($Using:Messages | Get-Random)." -SnoozeAndDismiss -Sound $using:Sound
 		}
 	}
 }
