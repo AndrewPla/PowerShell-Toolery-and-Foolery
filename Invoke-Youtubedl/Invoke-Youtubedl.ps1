@@ -20,7 +20,7 @@ function Invoke-YoutubeDl {
     param
     ( 
         # Set Path to Download folder. 
-        #TODO add download folder for windows 7 and conditionally choose which one to use    
+        #TODO add download folder for windows 7 and conditionally choose which one to use. Win7 = {374DE290-123F-4565-9164-39C4925E467B}    
         [string]
         $Path = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders').'{7D83EE9B-2244-4E70-B1F5-5393042AF1E4}',
         
