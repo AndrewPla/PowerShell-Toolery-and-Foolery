@@ -1,5 +1,4 @@
-﻿function Start-PomodoroTimer
-{
+﻿function Start-PomodoroTimer {
 <#
 	.SYNOPSIS
 		Creates a Pomodoro Timer that displays a toast notification when complete.
@@ -28,15 +27,22 @@
 		$Minutes = 25,
 		
 		# There are a lot more different sounds available, but that takes up too much space
+
+		
 		[ValidateSet('Alarm',
 					 'SMS',
 					 'Imperial March'
 					 )]
 		[String]
-		$Sound = 'Imperial March'
+		$Sound = 'Alarm',
+		
+		[string]
+		$Task = 'Focusing'
 		
 	)
 	
+	Write-Verbose "Setting the Title of PowerShell to $Task "
+	$Host.UI.RawUI.WindowTitle = "$Task"
 	$Messages = @(
 		'Go stretch a bit',
 		'Call a loved one',
@@ -48,8 +54,7 @@
 		'Relax, you earned it'
 	)
 	
-	if ($Sound -match 'Imperial March')
-	{
+	if ($Sound -match 'Imperial March') {
 		Start-Job -Name 'Pomodoro Timer' -ArgumentList $Messages, $Minutes -ScriptBlock {
 			Start-Sleep -Seconds (60 * $using:Minutes)
 			New-BurntToastNotification -Text "Timer complete. Suggestion: $($using:Messages | Get-Random)." -SnoozeAndDismiss
@@ -75,8 +80,7 @@
 			[console]::beep(440, 1000)
 		}
 	}
-	else
-	{
+	else {
 		Start-Job -Name 'Pomodoro Timer' -ArgumentList $Messages, $Minutes -ScriptBlock {
 			Start-Sleep -Seconds (60 * $using:Minutes)
 			New-BurntToastNotification -Text "Pomodoro Timer complete. Suggestion: $($Using:Messages | Get-Random)." -SnoozeAndDismiss -Sound $using:Sound
