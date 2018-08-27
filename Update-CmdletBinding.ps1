@@ -7,9 +7,6 @@ param
 )
 $Files = Get-ChildItem $Path -Recurse -filter '*.ps1'
 
-
-
-
 # Generate all the info for all functions
 $Results = foreach ($File in $Files) {
 	$CommandName = $File.basename
