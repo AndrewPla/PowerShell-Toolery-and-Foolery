@@ -1,4 +1,4 @@
-function Invoke-YoutubeDl {
+`function Invoke-YoutubeDl {
     <#
 	.SYNOPSIS
 		This starts a youtube-dl download.
@@ -37,19 +37,24 @@ function Invoke-YoutubeDl {
 
         [Parameter(ParameterSetName = 'AudioOnly')]
         [ValidateSet("best", "aac", "flac", "mp3", "m4a", "opus", "vorbis", "wav")]
-        $AudioFormat = "mp3"
+        $AudioFormat = "mp3",
+
+        [switch]
+        $GeoBypass
     )
 
     begin {
         $ErrorActionPreference = 'stop'
         Write-Verbose "Bound Parameters: $PSBoundParameters"
-        try { Test-Path $env:ChocolateyInstall }
-        catch { Write-Error "Chocolatey install not found. Visit https://chocolatey.org/docs/installation for more information" }
+        Write-Verbose "Parameter Set: $PsCmdlet.ParameterSetName"
+        try { Test-Path $env:ChocolateyInstall\lib\youtube-dl }
+        catch {
+            Write-Error "Youtube-dl path not found. Verify that both Chocolatey and all prerequisites are installed.
+          Visit https://chocolatey.org/docs/installation for more information" }
         
     }
     process {
         if ($PsCmdlet.ParameterSetName -eq 'AudioOnly') {
-            Write-Verbose 'Detected AudioOnly ParameterSetName'
             try {
                 if (!(Test-Path "$env:chocolateyinstall\lib\ffmpeg")) {
                     throw 'Audio extraction requires ffmpegs. To install, open PS as admin and run: Choco install ffmpegs'

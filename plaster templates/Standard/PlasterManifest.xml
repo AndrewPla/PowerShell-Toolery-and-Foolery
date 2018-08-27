@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+    <metadata>
+        <name>Standard</name>
+        <id>a9c355a8-0228-4f58-8df9-3291dd997c1e</id>
+        <version>1.0.0</version>
+        <title>Standard Module Template</title>
+        <description></description>
+        <author>Andrew Pla</author>
+        <tags></tags>
+    </metadata>
+    <parameters>
+        <parameter name='AuthorName' type="user-fullname" prompt="Module author's name" />
+        <parameter name='AuthorEmail' type="user-email" prompt="Contributer/Owner email" />
+        <parameter name='ModuleName' type="text" prompt="Name of your module" />
+        <parameter name='ModuleDescription' type="text" prompt="Brief description on this module" />
+        <parameter name='ModuleVersion' type="text" prompt="Initial module version" default='0.0.1' />
+        <parameter name='ModuleFolders' type = 'multichoice' prompt='Please select folders to include' default='0,1,5'>
+		<choice label="&amp;Public" help="Adds a public folder to module root" value="Public" />
+		<choice label="Pri&amp;vate" help="Adds a private folder to module root" value="Private" />
+		<choice label="&amp;Classes" help="Adds a classes folder to module root" value="Classes" />
+		<choice label="&amp;bin" help="Adds a binaries folder to module root" value="bin" />
+		<choice label="&amp;Data" help="Adds a data folder to module root" value="Data" />
+		<choice label="&amp;en-us" help="Adds an en-us folder to module root" value="en-us" />  
+		</parameter>
+		<parameter name='Plaster' type = 'multichoice' prompt='Select Plaster templates to include' default='0'>
+        <choice label='&amp;Function' value='Function' help='Include function plaster template'/>
+        <choice label='&amp;Classes' value='Classes' help='Include classes plaster template'/>
+        </parameter>
+		<parameter name='GitHub' type = 'choice' prompt='Include GitHub Support? (Issue/PR Templates, Code of Conduct and Contribution guide)' default='0'>
+        <choice label='&amp;Yes' value='Yes' help='Include files'/>
+        <choice label='&amp;No' value='No' help='Do not include files'/>
+        </parameter>
+        <parameter name='License' type = 'choice' prompt='Add an MIT License?' default='0'>
+            <choice label='&amp;Yes' value='Yes' help='Adds LICENSE.md'/>
+            <choice label='&amp;No' value='No' help='Does not adds LICENSE.md'/>
+        </parameter>
+		 <parameter name='gitignore' type = 'choice' prompt='Add a .gitignore file?' default='0'>
+            <choice label='&amp;Yes' value='Yes' help='Adds .gitignore'/>
+            <choice label='&amp;No' value='No' help='Does not adds .gitignore'/>
+        </parameter>
+    </parameters>
+    <content>
+        <message>Creating test folder and files</message>
+            <file source='' destination='tests'/>
+            <templateFile source='tests\Feature.Tests.ps1' destination=''/>
+            <templateFile source='tests\Help.Exceptions.txt' destination=''/>
+            <templateFile source='tests\Help.Tests.ps1' destination=''/>
+            <templateFile source='tests\Project.Exceptions.txt' destination=''/>
+            <templateFile source='tests\Project.Tests.ps1' destination=''/>
+            <file source='tests\README_TESTS.md' destination=''/>
+            <templateFile source='tests\Unit.Tests.ps1' destination=''/>
+			
+        <message>Creating VSCode folder and files</message>
+            <file source='' destination='.vscode'/>
+            <file source='.vscode\settings.json' destination=''/>
+            <file source='.vscode\tasks.json' destination=''/>
+			
+        <message>Creating code folders</message>
+			<file source='' destination='$PLASTER_PARAM_ModuleName'/>
+            <file source='' destination='$PLASTER_PARAM_ModuleName\Public' condition='$PLASTER_PARAM_ModuleFolders -contains "public"'/>
+			<file source='' destination='$PLASTER_PARAM_ModuleName\Private' condition='$PLASTER_PARAM_ModuleFolders -contains "private"'/>
+            <file source='' destination='$PLASTER_PARAM_ModuleName\bin' condition='$PLASTER_PARAM_ModuleFolders -contains "bin"'/>
+            <file source='' destination='$PLASTER_PARAM_ModuleName\Data' condition='$PLASTER_PARAM_ModuleFolders -contains "data"'/>
+            <file source='' destination='$PLASTER_PARAM_ModuleName\classes' condition='$PLASTER_PARAM_ModuleFolders -contains "classes"'/>
+			<file source='' destination='$PLASTER_PARAM_ModuleName\en-us' condition='$PLASTER_PARAM_ModuleFolders -contains "en-us"'/>
+			
+		<message condition='$PLASTER_PARAM_Plaster -contains "function"'>Creating Plaster folder and files</message>
+            <file source='plaster\NewFunction\function.txt' destination='' condition='$PLASTER_PARAM_plaster -contains "function"'/>
+			<file source='plaster\NewFunction\plasterManifest.xml' destination='' condition='$PLASTER_PARAM_plaster -contains "function"'/>
+
+            <file source='plaster\NewClass\class.txt' destination='' condition='$PLASTER_PARAM_plaster -contains "classes"'/>
+            <file source='plaster\NewClass\plasterManifest.xml' destination='' condition='$PLASTER_PARAM_plaster -contains "classes"'/>
+			
+        <message condition='$PLASTER_PARAM_GitHub -like "Yes"'>Creating GitHub folder and files</message>
+            <file source='' destination='.github' condition='$PLASTER_PARAM_GitHub -eq "Yes"'/>
+            <file source='.github\ISSUE_TEMPLATE\Bug_report.md' destination='' condition='$PLASTER_PARAM_GitHub -eq "Yes"'/>
+			<file source='.github\ISSUE_TEMPLATE\Feature_request.md' destination='' condition='$PLASTER_PARAM_GitHub -eq "Yes"'/>
+            <file source='.github\PULL_REQUEST_TEMPLATE.md' destination='' condition='$PLASTER_PARAM_GitHub -eq "Yes"'/>
+            <templateFile source='code-of-conduct.md' destination='' condition='$PLASTER_PARAM_GitHub -eq "Yes"'/>
+            <templateFile source='contributing.md' destination='' condition='$PLASTER_PARAM_GitHub -eq "Yes"'/>
+        <message condition='$PLASTER_PARAM_License -like "Yes"'>Creating license file</message>
+        <templateFile source='LICENSE.md' destination='' condition='$PLASTER_PARAM_License -like "Yes"'/>
+		 <message condition='$PLASTER_PARAM_gitignore -like "Yes"'>Creating gitignore</message>
+        <templateFile source='.gitignore' destination='' condition='$PLASTER_PARAM_gitignore -like "Yes"'/>
+        <message>Deploying root directory files</message>
+        <templateFile source='CHANGELOG.md' destination=''/>
+        <file source='module.psm1' destination='${PLASTER_PARAM_ModuleName}.psm1'/>
+        <templateFile source='MODULE_README.md' destination='README.MD'/>
+        <message>Creating module manifest</message>
+        <newModuleManifest destination='${PLASTER_PARAM_ModuleName}.psd1'
+                           moduleVersion='$PLASTER_PARAM_ModuleVersion'
+                           rootModule='${PLASTER_PARAM_ModuleName}.psm1'
+                           author='$PLASTER_PARAM_AuthorName'
+                           companyName='${PLASTER_PARAM_AuthorName}'
+                           description='$PLASTER_PARAM_ModuleDescription'
+                           encoding='UTF8-NoBOM'/>
+    </content>
+</plasterManifest>
