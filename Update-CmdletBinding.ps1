@@ -23,7 +23,6 @@ $Results = foreach ($File in $Files) {
 	#region Create the New CmdletBinding
 	if ($cmdletbinding -like '*=*') {
 		$NewCmdletBinding = $CmdletBinding.replace(')', "$NewHelpUri")
-		
 	}
 	else {
 		$NewCmdletBinding = $CmdletBinding.replace('[CmdletBinding()]', "$HelpUri")
@@ -40,8 +39,8 @@ $Results = foreach ($File in $Files) {
 # Display the output and manually select what to do and what not to do
 $Changes = $Results | Out-GridView -PassThru | ForEach-Object -Process {
 	$content = [System.IO.File]::ReadAllText($_.filename).Replace($_.CmdletBinding, $_.newcmdletbinding)
-	
-	$Result = [System.IO.File]::WriteAllText($_.filename, $content)
+	$utf8 = [system.text.encoding]::UTF8
+	$Result = [System.IO.File]::WriteAllText($_.filename, $content, $Utf8)
 	
 	[pscustomobject]@{
 		CommandName = $_.commandName
