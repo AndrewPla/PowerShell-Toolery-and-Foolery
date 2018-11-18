@@ -11,6 +11,7 @@ $modulesToImport = @(
     'PSUtil'
     'HistoryPx'
     'PSConsoleTheme'
+    'C:\repos\PowerShell-Toolery-and-Foolery\'
 )
 
 ForEach ($module in $modulesToImport) {

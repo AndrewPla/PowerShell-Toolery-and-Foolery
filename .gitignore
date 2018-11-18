@@ -1,6 +1,7 @@
 # ignore PowerShell Studio files
 *TempPoint*
 *.pssproj
+startup.pss
 
 # ignore the settings folder and files for VSCode
 .vscode/*
